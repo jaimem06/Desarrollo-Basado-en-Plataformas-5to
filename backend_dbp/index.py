@@ -11,3 +11,4 @@ if __name__ == "__main__":
 
 # pip install flask_sqlalchemy
 #pip install PyMySQL
+#pip install cryptography
