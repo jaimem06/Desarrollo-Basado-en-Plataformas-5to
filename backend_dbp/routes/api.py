@@ -1,7 +1,13 @@
 from flask import Blueprint, jsonify, make_response, request
+
 # Importacion de los modelos de tablas de la base de datos
 from models.rol import Rol
-from models.practicando import Practicando
+from models.catalogo_motivo import Catalogo_Motivo
+from models.censador import Censador
+from models.censo_persona import Censo_Persona
+from models.censo import Censo
+from models.motivo_censo import Motivo_Censo
+from models.persona import Persona
 
 api = Blueprint('api', __name__)
 
