@@ -6,3 +6,5 @@ class Censo (db.Model):
     fecha_in = db.Column(db.Date)
     fecha_fin = db.Column(db.Date)
     motivo = db.Column(db.String(250))
+    # Relación uno a muchos con Censo_Persona
+    censo_persona = db.relationship('Censo_Persona', backref='censo', lazy=True)
