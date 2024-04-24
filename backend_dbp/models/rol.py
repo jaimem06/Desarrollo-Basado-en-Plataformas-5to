@@ -10,13 +10,3 @@ class Rol(db.Model):
     
     # 1 rol tiene muchas personas
     roles = db.relationship('Persona', backref='rol', lazy=True)
-
-    @property
-    def serelize(self):
-        return {
-            'id': self.id,
-            'nombre': self.nombre,
-            'descripcion': self.descripcion,
-            'external_id': self.external_id,
-            'estado': 1 if self.estado else 0
-        }

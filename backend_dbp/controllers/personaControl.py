@@ -16,3 +16,15 @@ class PersonaControl:
         db.session.add(persona)
         db.session.commit()
         return persona.id
+        
+    def crear (self, data):
+        persona = Persona()
+        persona.external_id = str(uuid.uuid4())
+        persona.nombres = data.get('nombres')
+        persona.apellidos = data.get('apellidos')
+        persona.estado = data.get('estado')
+        persona.edad = data.get('edad')
+        persona.id_rol = data.get('id_rol')
+        db.session.add(persona)
+        db.session.commit()
+        return persona

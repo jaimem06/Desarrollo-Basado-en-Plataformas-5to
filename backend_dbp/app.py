@@ -21,4 +21,5 @@ def create_app():
         app.register_blueprint(api_persona)
         # Creacion de tablas en la base de datos
         db.create_all()
+        #db.drop_all()
     return app

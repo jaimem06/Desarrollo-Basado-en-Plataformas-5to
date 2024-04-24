@@ -1,5 +1,6 @@
 from app import db
 import uuid
+from models.rol import Rol
 
 class Persona(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,13 +32,16 @@ class Persona(db.Model):
     
     def serialize(self):
         return {
-            'id': self.id,
             'external_id': self.external_id,
             'nombres': self.nombres,
             'apellidos': self.apellidos,
             'estado': self.estado,
             'edad': self.edad,
-            'id_rol': self.id_rol
+            'rol': self.rol.descripcion
         }
+    # Mostrar el nombre del rol
+    @property
+    def rol_descripcion(self):
+        return self.rol.descripcion if self.rol else None
    
 #catalogo__motivo, censador, censo, censo__persona, motivo__censo, persona, rol
