@@ -1,6 +1,6 @@
 from app import db
 import uuid
-from models.rol import Rol
+from datetime import datetime
 
 class Persona(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -8,10 +8,13 @@ class Persona(db.Model):
     nombres = db.Column(db.String(100))
     apellidos = db.Column(db.String(100))
     estado = db.Column(db.Boolean, default=True)
-    edad = db.Column(db.Integer)
+    fecha_nac = db.Column(db.Date)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     # Relación uno a muchos con Censo_Persona
     censos = db.relationship('Censo_Persona', backref='persona', lazy=True)
     id_rol = db.Column(db.Integer, db.ForeignKey('rol.id'), nullable = False)
+    cuenta = db.relationship('Cuenta', backref='persona', lazy=True)
 
     # Getters and setters
     @property
@@ -36,12 +39,6 @@ class Persona(db.Model):
             'nombres': self.nombres,
             'apellidos': self.apellidos,
             'estado': self.estado,
-            'edad': self.edad,
-            'rol': self.rol.descripcion
+            'fecha_nac': self.fecha_nac.isoformat() if self.fecha_nac else None,
         }
-    # Mostrar el nombre del rol
-    @property
-    def rol_descripcion(self):
-        return self.rol.descripcion if self.rol else None
-   
-#catalogo__motivo, censador, censo, censo__persona, motivo__censo, persona, rol
+#catalogo__motivo, censador, censo, censo__persona, motivo__censo, persona, rol, motivo
