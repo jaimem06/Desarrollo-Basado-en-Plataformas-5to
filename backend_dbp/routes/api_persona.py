@@ -70,6 +70,7 @@ schema_censador = {
     },
     'required': ["nombres", "apellidos", "fecha_nac", "estado", "correo", "clave"]
 }
+
 # API para guardar censador
 @api_persona.route("/persona/guardar/censador", methods=['POST'])
 @expects_json(schema_censador)
@@ -89,3 +90,22 @@ def guardar_censador():
             jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : Erros.error[str(id)]}}), 
             400
         )
+
+# API para mostrar persona por external_id
+@api_persona.route("/persona/<external_id>")
+def mostrar(external_id):
+    persona = personaC.obtener_por_external_id(external_id)
+    if persona:
+        return make_response(jsonify({"msg": "OK", "code": 200, "datos": persona.serialize()}), 200)
+    else:
+        return make_response(jsonify({"msg": "Error", "code": 404, "datos": {"error": "Persona no encontrada"}}), 404)
+
+# API para modificar persona por external_id
+@api_persona.route("/personam/<external_id>", methods=['PUT'])
+def modificar(external_id):
+    data = request.get_json()
+    persona = personaC.modificar(external_id, data)
+    if persona:
+        return make_response(jsonify({"msg": "OK", "code": 200, "datos": persona.serialize()}), 200)
+    else:
+        return make_response(jsonify({"msg": "Error", "code": 404, "datos": {"error": "Persona no encontrada"}}), 404)
