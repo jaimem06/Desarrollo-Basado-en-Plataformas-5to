@@ -11,12 +11,12 @@ personaC = PersonaControl()
 schema = {
     "type": "object",
     'properties': {
-        "nombre": {"type": "string"},
-        "apellido": {"type": "string"},
-        "fecha": {"type": "string"},
-        "estado": {"type": "boolean"},
+        "nombres": {"type": "string"},
+        "apellidos": {"type": "string"},
+        "fecha_nac": {"type": "string"},
+        "estado": {"type": "string"},
     },
-    'required': ["nombre", "apellido", "fecha", "estado"]
+    'required': ["nombres", "apellidos", "fecha_nac", "estado"]
 }
 
 @api_persona.route("/persona")
@@ -26,24 +26,14 @@ def listar():
         200
     )
 
-@api_persona.route("/persona.post", methods=['POST'])
-def crear():
-    data = request.get_json()
-    result = personaC.crear(data)
-    if result:
-        return make_response(jsonify({"msg": "OK", "code": 201, "datos": result.serialize()}), 201)
-    else:
-        return make_response(jsonify({"msg": "Error", "code": 400}), 400)
-
 # API para guardar censado
 @api_persona.route("/persona/guardar/censado", methods=['POST'])
 @expects_json(schema)
 def guardar_censado():
     data = request.get_json()
-    
     id = personaC.guardar_censado(data)
     print("el id es: "+ str(id))
-    
+
     if id >= 0:
         return make_response(
             jsonify({"msg": "OK", "code": 200, "datos": {"tag": "Datos Guardados"}}),
@@ -76,10 +66,9 @@ schema_censador = {
 @expects_json(schema_censador)
 def guardar_censador():
     data = request.get_json()
-    
     id = personaC.guardar_censador(data)
     print("el id es: "+ str(id))
-    
+
     if id >= 0:
         return make_response(
             jsonify({"msg": "OK", "code": 200, "datos": {"tag": "Datos Guardados"}}),
@@ -101,7 +90,7 @@ def mostrar(external_id):
         return make_response(jsonify({"msg": "Error", "code": 404, "datos": {"error": "Persona no encontrada"}}), 404)
 
 # API para modificar persona por external_id
-@api_persona.route("/personam/<external_id>", methods=['PUT'])
+@api_persona.route("/personam/<external_id>", methods=['POST'])
 def modificar(external_id):
     data = request.get_json()
     persona = personaC.modificar(external_id, data)
@@ -109,3 +98,21 @@ def modificar(external_id):
         return make_response(jsonify({"msg": "OK", "code": 200, "datos": persona.serialize()}), 200)
     else:
         return make_response(jsonify({"msg": "Error", "code": 404, "datos": {"error": "Persona no encontrada"}}), 404)
+
+# API para activar una cuenta
+@api_persona.route("/cuenta/activar/<external_id>", methods=['POST'])
+def activar_cuenta(external_id):
+    cuenta = personaC.activar_cuenta(external_id)
+    if cuenta:
+        return make_response(jsonify({"msg": "OK", "code": 200, "datos": {"tag": "Cuenta activada"}}), 200)
+    else:
+        return make_response(jsonify({"msg": "Error", "code": 404, "datos": {"error": "Cuenta no encontrada"}}), 404)
+
+# API para desactivar una cuenta
+@api_persona.route("/cuenta/desactivar/<external_id>", methods=['POST'])
+def desactivar_cuenta(external_id):
+    cuenta = personaC.desactivar_cuenta(external_id)
+    if cuenta:
+        return make_response(jsonify({"msg": "OK", "code": 200, "datos": {"tag": "Cuenta desactivada"}}), 200)
+    else:
+        return make_response(jsonify({"msg": "Error", "code": 404, "datos": {"error": "Cuenta no encontrada"}}), 404)

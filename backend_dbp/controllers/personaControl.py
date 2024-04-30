@@ -73,29 +73,44 @@ class PersonaControl:
     def obtener_por_external_id(self, external_id):
         return Persona.query.filter_by(external_id=external_id).first()
     
-    # Metodo para modificar persona por external_id
+    # Metodo para modificar una persona por id
     def modificar(self, external_id, data):
+        # 1. Ob Persona
         persona = Persona.query.filter_by(external_id=external_id).first()
+
+        # 2. Validar existe persona
         if persona:
-            persona.nombre = data.get('nombre', persona.nombre)
-            persona.apellido = data.get('apellido', persona.apellido)
-            persona.fecha_nac = data.get('fecha', persona.fecha_nac)
+            # 3. Actualizar atributos de persona
+            persona.nombres = data.get('nombres', persona.nombres)
+            persona.apellidos = data.get('apellidos', persona.apellidos)
+            persona.fecha_nac = data.get('fecha_nac', persona.fecha_nac)
             persona.estado = data.get('estado', persona.estado)
-            
-            rol_nombre = data.get('rol')
-            if rol_nombre:
-                rol = Rol.query.filter_by(nombre=rol_nombre).first()
-                if rol:
-                    persona.id_rol = rol.id
-            
-            cuenta_data = data.get('cuenta')
-            if cuenta_data:
-                cuenta = Cuenta.query.filter_by(id_persona=persona.id).first()
-                if cuenta:
-                    cuenta.correo = cuenta_data.get('correo', cuenta.correo)
-                    cuenta.clave = cuenta_data.get('clave', cuenta.clave)
-            
+            persona.id_rol = data.get('id_rol', persona.id_rol)
+
+            # 4. Update
             db.session.commit()
+
             return persona
         else:
-            return None
+            # 5. Retornar -3 en caso de error
+            return -3
+        
+# Metodo para activar una cuenta
+def activar_cuenta(self, external_id):
+    cuenta = Cuenta.query.filter_by(external_id=external_id).first()
+    if cuenta:
+        cuenta.estado = True
+        db.session.commit()
+        return cuenta
+    else:
+        return None
+
+# Metodo para desactivar una cuenta
+def desactivar_cuenta(self, external_id):
+    cuenta = Cuenta.query.filter_by(external_id=external_id).first()
+    if cuenta:
+        cuenta.estado = False
+        db.session.commit()
+        return cuenta
+    else:
+        return None

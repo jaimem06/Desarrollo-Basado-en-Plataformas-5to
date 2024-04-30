@@ -21,7 +21,8 @@ if __name__ == "__main__":
 # ORM que se va a utilizar:
 
 # pip install flask_sqlalchemy
-#pip install PyMySQL
-#pip install cryptography
-#pip install flask-expects-json
-#pip install jsonschema
+# pip install PyMySQL
+# pip install cryptography
+# pip install flask-expects-json
+# pip install jsonschema
+# pip install tokenizer
