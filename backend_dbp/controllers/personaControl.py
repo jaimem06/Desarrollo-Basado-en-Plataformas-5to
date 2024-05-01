@@ -1,8 +1,12 @@
 from models.persona import Persona
 from models.rol import Rol
 from models.cuenta import Cuenta
+from controllers.utils.errors import Erros
 import uuid
 from app import db
+import jwt
+from datetime import datetime, timedelta
+from flask import current_app
 
 class PersonaControl:
 
@@ -94,23 +98,49 @@ class PersonaControl:
         else:
             # 5. Retornar -3 en caso de error
             return -3
+        # Metodo para activar una cuenta
         
-# Metodo para activar una cuenta
-def activar_cuenta(self, external_id):
-    cuenta = Cuenta.query.filter_by(external_id=external_id).first()
-    if cuenta:
-        cuenta.estado = True
-        db.session.commit()
-        return cuenta
-    else:
-        return None
-
-# Metodo para desactivar una cuenta
-def desactivar_cuenta(self, external_id):
-    cuenta = Cuenta.query.filter_by(external_id=external_id).first()
-    if cuenta:
-        cuenta.estado = False
-        db.session.commit()
-        return cuenta
-    else:
-        return None
+    def activar_cuenta(self, external_id):
+        cuenta = Cuenta.query.filter_by(external_id=external_id).first()
+        if cuenta:
+            cuenta.estado = True
+            db.session.commit()
+            return cuenta
+        else:
+            return None
+    
+    # Metodo para desactivar una cuenta
+    def desactivar_cuenta(self, external_id):
+        cuenta = Cuenta.query.filter_by(external_id=external_id).first()
+        if cuenta:
+            cuenta.estado = False
+            db.session.commit()
+            return cuenta
+        else:
+            return None
+        
+    def inicio_sesion(self, data):
+        cuentaA = Cuenta.query.filter_by(correo = data.get('correo')).first()
+        if cuentaA:
+            # TODO encriptar
+            if cuentaA.clave == data["clave"]:
+                token = jwt.encode(
+                    {
+                        "external": cuentaA.external_id,
+                        "expiracion": (datetime.utcnow() + timedelta(minutes=30)).isoformat()(minutes=30)
+                    }, 
+                    key = current_app.config["SECRET_KEY"],
+                    algorithm="HS512"
+                )
+                cuenta = Cuenta()
+                cuenta.copy(cuentaA)
+                persona = Cuenta.getPersona(cuentaA.id_persona)
+                info = {
+                    "token": token,
+                    "user": persona.apellidos + " " + persona.nombres
+                }
+                return info
+            else:
+                return -5
+        else:
+            return -5

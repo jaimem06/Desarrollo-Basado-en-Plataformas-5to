@@ -26,3 +26,4 @@ if __name__ == "__main__":
 # pip install flask-expects-json
 # pip install jsonschema
 # pip install tokenizer
+# pip install PyJWT

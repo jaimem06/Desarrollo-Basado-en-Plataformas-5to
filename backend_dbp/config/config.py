@@ -16,6 +16,9 @@ class Config:
     host = environ.get('MYSQL_HOST')
     db = environ.get('MYSQL_DATABASE')
 
+    # Configuración para Token
+    SECRET_KEY = environ.get('SECRET_KEY')
+
     # CONFIGURACION DE LA SQLAlchemy
     SQLALCHEMY_DATABASE_URI = f'mysql://{user}:{password}@{host}/{db}'
     print(SQLALCHEMY_DATABASE_URI)

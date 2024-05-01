@@ -1,8 +1,11 @@
 class Erros:
     error = {"-1": "No se encuntra rol"}
-    error.update({"-2": "Ya existe la cuenta"})
-    error = {"-3": "No se pudo modificar usuario"}
-    error = {"-4": "No se encontro el motivo"}
+    error = {"-2": "Ya existe la cuenta"}
+    error = {"-3": "No se pudo modificar persona"}
+    error = {"-4": "Motivo no encontrado"}
+    error = {"-5": "Cuenta no encontrada"}
+    error = {"-6": "Token no existe"}
+    error = {"-7": "Token no valido"}
 
  #   1. Ob Persona
  #   2. Validar existe persona
