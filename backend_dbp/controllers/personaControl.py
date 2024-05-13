@@ -5,7 +5,7 @@ from controllers.utils.errors import Erros
 import uuid
 from app import db
 import jwt
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from flask import current_app
 
 class PersonaControl:
@@ -127,14 +127,14 @@ class PersonaControl:
                 token = jwt.encode(
                     {
                         "external": cuentaA.external_id,
-                        "expiracion": (datetime.utcnow() + timedelta(minutes=30)).isoformat()(minutes=30)
+                        "expiracion": (datetime.now(timezone.utc) + timedelta(minutes=60)).isoformat()
                     }, 
                     key = current_app.config["SECRET_KEY"],
                     algorithm="HS512"
                 )
                 cuenta = Cuenta()
                 cuenta.copy(cuentaA)
-                persona = Cuenta.getPersona(cuentaA.id_persona)
+                persona = cuentaA.getPersona(cuentaA.id_persona)
                 info = {
                     "token": token,
                     "user": persona.apellidos + " " + persona.nombres

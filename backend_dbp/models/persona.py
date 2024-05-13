@@ -39,7 +39,7 @@ class Persona(db.Model):
             'external_id': self.external_id,
             'nombres': self.nombres,
             'apellidos': self.apellidos,
-            'estado': self.estado,
+            'estado': self.estado.serialize() if self.estado else None,
             'fecha_nac': self.fecha_nac.isoformat() if self.fecha_nac else None,
         }
     

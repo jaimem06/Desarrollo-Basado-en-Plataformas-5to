@@ -18,11 +18,11 @@ class Cuenta(db.Model):
         from models.persona import Persona
         return Persona.query.filter_by(id = id_p).first()
 
-    def copy_data(self, value):
-        self.correo = value.get('correo')
-        self.clave = value.get('clave')
-        self.estado = value.get('estado')
-        self.id = value.get('id')
+    def copy(self, value):
+        self.correo = value.correo
+        self.clave = value.clave
+        self.estado = value.estado
+        self.id = value.id
         self.external_id = str(uuid.uuid4())
         self.created_at = datetime.now()
         self.updated_at = datetime.now()
