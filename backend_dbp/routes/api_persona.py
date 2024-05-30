@@ -137,9 +137,9 @@ def session():
     id = personaC.inicio_sesion(data)
     print("el id es: "+ str(id))
 
-    if (id) == int:
+    if type(id) == int:
         return make_response(
-            jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : Erros.error[str(id)]}}), 
+            jsonify({"msg" : "ERROR", "code" : 400, "datos" :{"error" : Erros.error.get(str(id))}}), 
             400
         )
     else:
