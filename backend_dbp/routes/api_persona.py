@@ -47,7 +47,7 @@ schema_censador = {
 
 # API para listar personas
 @api_persona.route("/persona")
-@token_required
+#@token_required
 def listar():
     return make_response(
         jsonify({"msg": "OK", "code": 200, "datos": [i.serialize() for i in personaC.listar()]}),
