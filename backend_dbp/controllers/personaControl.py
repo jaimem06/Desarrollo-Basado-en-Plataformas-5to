@@ -7,6 +7,7 @@ from app import db
 import jwt
 from datetime import datetime, timedelta, timezone
 from flask import current_app
+from models.tipoEstadoCivil import TipoEstadoCivil
 
 class PersonaControl:
 
@@ -144,3 +145,7 @@ class PersonaControl:
                 return -5
         else:
             return -5
+    
+    def listar_estados_civiles(self):
+        return [estado.name for estado in TipoEstadoCivil]
+    

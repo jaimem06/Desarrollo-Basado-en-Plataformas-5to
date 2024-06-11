@@ -147,3 +147,8 @@ def session():
             jsonify({"msg": "OK", "code": 200, "datos": id}),
             200
         )
+
+# API para listar estados civiles
+@api_persona.route("/estados_civiles")
+def get_estados_civiles():
+    return jsonify(personaC.listar_estados_civiles())
